@@ -2,7 +2,7 @@ package modelPac
 {
 	import flash.display.Loader;
 
-	public class Friends extends User
+	public class Friend extends SuperFriend
 	{
 		private var _id:String;
 		public function get getID():String { return _id; } 
@@ -24,14 +24,14 @@ package modelPac
 		public function get getImage():Loader { return _image; } 
 		public function set setImage(setValue:Loader):void { _image = setValue; }
 		
-		public function Friends(id:String, firstName:String, lastName:String, online:Boolean, image:Loader):void
+		public function Friend(id:String, firstName:String, lastName:String, online:Boolean):void
 		{
 			super();
 			_id = id;
 			setFirstName = firstName;
 			setLastName = lastName;
 			_online = online;
-			_image = image;
+			//_image = image;
 			checkBox.check.visible = false;
 			this.label.text = _firstName;
 		}

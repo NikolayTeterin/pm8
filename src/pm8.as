@@ -15,9 +15,9 @@ package
 		{
 			Facade.gameStage = stage;
 			
-			Facade.view = new MainView();
 			Facade.controller = new MainController();
 			Facade.model = new MainModel();
+			Facade.view = new MainView();
 			Facade.baseValue = new BaseValue();
 		}
 	}
