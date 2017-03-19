@@ -15,15 +15,15 @@ package modelPac
 		public function MainClip()
 		{
 			super();
-			sendButton.stop();
-			sendButton.addEventListener(MouseEvent.MOUSE_OVER, Facade.handlers.onMouseOver);
-			sendButton.addEventListener(MouseEvent.MOUSE_OUT, Facade.handlers.onMouseOut);
-			sendButton.addEventListener(MouseEvent.MOUSE_DOWN, Facade.handlers.onMouseDown);
-			sendButton.addEventListener(MouseEvent.MOUSE_UP, Facade.handlers.onMouseUp);
+			stop();
+			Handlers.SetButton(sendButton);
 			sendButton.addEventListener(MouseEvent.CLICK, onSendButtonClick);
 			
 			this.search.addEventListener(KeyboardEvent.KEY_UP, onSearchInput);
 			this.search.addEventListener(MouseEvent.CLICK, onSearchClick);
+			
+			Handlers.SetButton(leftArrow);
+			Handlers.SetButton(rightArrow);
 		}
 		
 		protected function onSearchClick(event:MouseEvent):void
@@ -35,21 +35,22 @@ package modelPac
 		
 		protected function outSearch(event:MouseEvent):void
 		{
-			if (event.target == search.textField)
+			if (
+				event.target == search.textField
+				|| event.target.name == "check"
+				|| event.target.name == "checkBox"
+				|| event.target.name == "box"
+				|| event.target.name == this.sendButton.name
+				|| event.target.parent.name == rightArrow.name
+				|| event.target.parent.name == leftArrow.name
+				)				
 				return;
-			if(event.target == leftArrow || event.target.name == "movieClip_9")
-			{
-				RightArrowClick(null);
-				SetField(0);
-				return;
-			}
-				
-			trace (event.target.name);
+
 			search.textField.text = "Найти друга по имени";
 			this.removeEventListener(MouseEvent.CLICK, outSearch);
 			search.addEventListener(MouseEvent.CLICK, onSearchClick);
-			RightArrowClick(null);
-			SetField(99);
+			Facade.controller.searchedList = new Array();
+			SetField(currentFrame, true);
 		}
 		
 		protected function onSearchInput(event:KeyboardEvent):void
@@ -67,32 +68,33 @@ package modelPac
 			{
 				fr = Facade.controller.selectedList.shift();
 				fr.checkBox.gotoAndStop("disable");
-				fr.checkBox.removeEventListener(MouseEvent.MOUSE_OVER, Facade.handlers.onMouseOver);
-				fr.checkBox.removeEventListener(MouseEvent.MOUSE_OUT, Facade.handlers.onMouseOut);
+				fr.checkBox.mouseEnabled = false;
+				Handlers.UnSetButton(fr.checkBox);
+				fr.checkBox.removeEventListener(MouseEvent.CLICK, fr.onCheckBoxClick);
+
 			}
 		}
 		
 		public function onEnterFrame(event:Event):void
 		{
-			maxI = 0;
-			itemCounter = 0;
-			SetField(this.currentFrame);
+			SetField(this.currentFrame, true);
 			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		
-		public function SetField(frameInd: int = 99):void {
-			list = Facade.controller.searchedList;
-			if (frameInd == 2) 
+		public function SetField(frameInd: int = 99, res:Boolean = false):void {
+			if (res) 
+				ResetField();
+			if (frameInd == 2) {
 				list = Facade.controller.offlineList;
-			else if (frameInd == 1) 
-				list = Facade.controller.onlineList;
-			else if (frameInd == 0)
-			{
-				RightArrowClick(null);
-				maxI = 0;
-				itemCounter = 0;
 			}
+			else if (frameInd == 1) {
+				list = Facade.controller.onlineList;			
+			}
+			else if (frameInd == 0) {
+				list = Facade.controller.searchedList;
+			}
+
 			maxI = BaseValue.countItemPerFrame + itemCounter;
 			maxI = maxI > list.length ? (maxI - (maxI - list.length)) : maxI;
 			for (var i: int = itemCounter; i < maxI; i++) {
@@ -118,14 +120,25 @@ package modelPac
 			itemCounter = i;
 		}
 		
-		protected function RightArrowClick(event:MouseEvent):void
+		private function ResetField():void
 		{
-			for (var i: int = 0; i < maxI; i++)
+			if (itemCounter !=0 )
+			for (var i: int = itemCounter - BaseValue.countItemPerFrame; i < itemCounter; i++)
 				if (list[i] != null)
 					list[i].visible = false;
-			if (event)
+			maxI = 0;
+			itemCounter = 0;
+		}
+		
+		protected function RightArrowClick(event:MouseEvent):void
+		{
+			for (var i: int = itemCounter - BaseValue.countItemPerFrame; i < itemCounter; i++)
+				if (list[i] != null)
+					list[i].visible = false;
+			if (Facade.controller.searchedList.length == 0)
 				SetField(this.currentFrame);
-			
+			else
+				SetField(0);
 		}
 		
 		protected function LeftArrowClick(event:MouseEvent):void
@@ -137,7 +150,10 @@ package modelPac
 				if (list[i] != null)
 					list[i].visible = false;
 			itemCounter = start - BaseValue.countItemPerFrame;
-			SetField(this.currentFrame);
+			if (Facade.controller.searchedList.length == 0)
+				SetField(this.currentFrame);
+			else
+				SetField(0);
 		}
 	}
 }

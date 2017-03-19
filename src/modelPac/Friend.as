@@ -36,29 +36,25 @@ package modelPac
 			_online = online;
 			setImage = imageURL;
 			
-			checkBox.stop();
 			checkBox.check.visible = false;
-			checkBox.addEventListener(MouseEvent.MOUSE_OVER, Facade.handlers.onMouseOver);
-			checkBox.addEventListener(MouseEvent.MOUSE_OUT, Facade.handlers.onMouseOut);
-			checkBox.addEventListener(MouseEvent.MOUSE_DOWN, Facade.handlers.onMouseDown);
-			checkBox.addEventListener(MouseEvent.MOUSE_UP, Facade.handlers.onMouseUp);
+			Handlers.SetButton(checkBox);
 			checkBox.addEventListener(MouseEvent.CLICK, onCheckBoxClick);		
 			
 			this.addEventListener(MouseEvent.CLICK, onFriendClick);
+			this.name = "friend";
 			
 		}
 		
 		protected function onFriendClick(event:MouseEvent):void
 		{
 			//Facade.controller.SendRequest("82232368", "222");
-			Facade.controller.WallPost("12703356");
+			if (event.target.name != this.name)
+				return;
+			this.visible = false;
+			//Facade.controller.WallPost("12703356");
 		}
 		
-		private function onCheckBoxClick(event: MouseEvent): void {
-//			if (checkBox.currentFrame == 3) {
-//				checkBox.removeEventListener(MouseEvent.CLICK, onCheckBoxClick);
-//				return;
-//			}
+		public function onCheckBoxClick(event: MouseEvent): void {
 			checkBox.check.visible = !checkBox.check.visible;
 			if (checkBox.check.visible)
 				Facade.controller.selectedList.push(this);

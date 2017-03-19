@@ -132,8 +132,8 @@ package controllerPac
 						));
 					it++;
 				}
-//				Facade.view.ToLog = onlineList.length + " друзей онлайн";
-//				Facade.view.ToLog = offlineList.length + " друзей офлайн";
+				Facade.view.ToLog = onlineList.length + " друзей онлайн";
+				Facade.view.ToLog = offlineList.length + " друзей офлайн";
 				
 				Facade.view.getClip.addEventListener(Event.ENTER_FRAME, Facade.view.getClip.onEnterFrame);
 		}
@@ -150,11 +150,9 @@ package controllerPac
 				str = str.toLocaleLowerCase();
 				text = text.toLocaleLowerCase();
 				if (str.substr(0, text.length) == text)
-				{
 					searchedList.push(list[i]);
-				}
 			}
-			Facade.view.getClip.SetField();
+			Facade.view.getClip.SetField(0, true);
 		}
 	}
 }
