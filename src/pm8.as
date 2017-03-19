@@ -2,6 +2,8 @@ package
 {
 	import flash.display.Sprite;
 	
+	import Handlers;
+	
 	import controllerPac.MainController;
 	
 	import modelPac.MainModel;
@@ -14,6 +16,7 @@ package
 		public function pm8()
 		{
 			Facade.gameStage = stage;
+			Facade.handlers = new Handlers();
 			
 			Facade.controller = new MainController();
 			Facade.model = new MainModel();

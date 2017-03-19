@@ -34,18 +34,10 @@ package viewPac
 		
 		override protected function onRegister():void
 		{			
-			
 			_clip = new MainClip();
 			_clip.button_2.addEventListener(MouseEvent.CLICK, TabClick);
 			Facade.gameStage.addChild(_clip);
-			_log = _clip.tf;
-			
-//			_friend = new Friend("1", "name", "su123123", 1, null);
-//			Facade.gameStage.addChild(_friend);
-			
-			_checkBox = new CheckBox();
-			Facade.gameStage.addChild(_checkBox);
-			
+			_log = _clip.tf;			
 		}
 		
 		protected function TabClick(event:MouseEvent):void

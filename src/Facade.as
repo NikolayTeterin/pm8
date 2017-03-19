@@ -16,6 +16,7 @@ package
 		public static var controller:MainController;
 		public static var model:MainModel;
 		public static var baseValue:BaseValue;
+		public static var handlers:Handlers;
 		
 		public function Facade()
 		{
