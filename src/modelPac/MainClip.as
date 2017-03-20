@@ -16,8 +16,7 @@ package modelPac
 		{
 			super();
 			stop();
-			Handlers.SetButton(sendButton);
-			sendButton.addEventListener(MouseEvent.CLICK, onSendButtonClick);
+			Handlers.SetButton(sendButton, onSendButtonClick);
 			
 			this.search.addEventListener(KeyboardEvent.KEY_UP, onSearchInput);
 			this.search.addEventListener(MouseEvent.CLICK, onSearchClick);
@@ -67,9 +66,7 @@ package modelPac
 				fr = Facade.controller.selectedList.shift();
 				fr.checkBox.gotoAndStop("disable");
 				fr.checkBox.mouseEnabled = false;
-				Handlers.UnSetButton(fr.checkBox);
-				fr.checkBox.removeEventListener(MouseEvent.CLICK, fr.onCheckBoxClick);
-
+				Handlers.UnSetButton(fr.checkBox, fr.onCheckBoxClick);
 			}
 		}
 		

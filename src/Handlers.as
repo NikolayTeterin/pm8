@@ -26,23 +26,27 @@ package
 			event.target.gotoAndStop(1);
 		}
 		
-		public static function SetButton(button:MovieClip):void
+		public static function SetButton(button:MovieClip, clickFunc:Function = null):void
 		{
 			button.stop();
 			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			button.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			if (clickFunc != null)
+				button.addEventListener(MouseEvent.CLICK, clickFunc)
 			
 		}
 		
-		public static function UnSetButton(button:MovieClip):void
+		public static function UnSetButton(button:MovieClip, clickFunc:Function = null):void
 		{
 			button.stop();
 			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			button.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			if (clickFunc != null)
+				button.removeEventListener(MouseEvent.CLICK, clickFunc);
 
 		}
 	}
