@@ -14,7 +14,7 @@ package viewPac
 	{
 		private var _clip:MainClip;// = new MainClip();
 		private var _friend:Friend;
-		private var _checkBox:CheckBox;
+		//private var _checkBox:CheckBox;
 		private var _log:TextField;
 		
 		public function get getClip():MovieClip

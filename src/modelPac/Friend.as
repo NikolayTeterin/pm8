@@ -36,9 +36,12 @@ package modelPac
 			_online = online;
 			setImage = imageURL;
 			
-			checkBox.check.visible = false;
+			
 			Handlers.SetButton(checkBox);
-			checkBox.addEventListener(MouseEvent.CLICK, onCheckBoxClick);		
+			checkBox.check.mouseEnabled = false;
+			checkBox.check.visible = false;
+			
+			checkBox.addEventListener(MouseEvent.CLICK, onCheckBoxClick);			
 			
 			this.addEventListener(MouseEvent.CLICK, onFriendClick);
 			this.name = "friend";

@@ -10,7 +10,6 @@ package
 		public static var 			FRIENDS_METHOD: String = "friends.get.xml";
 		public static var 			POST_METHOD: String = "wall.post";
 		public static var 			countItemPerFrame:int = 8;
-
 		
 		public function BaseValue()
 		{

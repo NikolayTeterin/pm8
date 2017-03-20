@@ -37,12 +37,10 @@ package modelPac
 		{
 			if (
 				event.target == search.textField
-				|| event.target.name == "check"
 				|| event.target.name == "checkBox"
-				|| event.target.name == "box"
-				|| event.target.name == this.sendButton.name
-				|| event.target.parent.name == rightArrow.name
-				|| event.target.parent.name == leftArrow.name
+				|| event.target == sendButton
+				|| event.target == rightArrow
+				|| event.target == leftArrow
 				)				
 				return;
 
