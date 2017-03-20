@@ -9,7 +9,6 @@ package controllerPac
 	import BaseClasses.BaseClass;
 	
 	import modelPac.Friend;
-	import modelPac.MainClip;
 	
 	import vk.APIConnection;
 	
@@ -21,6 +20,7 @@ package controllerPac
 		public var offlineList:Array = new Array();
 		public var selectedList:Array = new Array();
 		public var searchedList:Array = new Array();
+		public var ready:Boolean = false;
 		
 		
 		public function MainController()
@@ -34,8 +34,6 @@ package controllerPac
 			if (!flashVars.api_id) {
 				flashVars['api_id'] = "5918660";
 				flashVars['viewer_id'] = "12703356";
-				//flashVars['sid'] = "26OHqxA8obdsQpXs0Px0";
-				//flashVars['secret'] = "26OHqxA8obdsQpXs0Px0";
 				flashVars['access_token'] = "72d8f3fd72d8f3fd72d8f3fd577282bc39772d872d8f3fd2a15cb4356a7cf49823f381f";
 			}
 			VK = new APIConnection(flashVars);
@@ -43,49 +41,30 @@ package controllerPac
 		
 		public function WallPost(ownerID:String):void
 		{
-			VK.api("wall.post", {
-				api_id: "5918660",
-				sid: flashVars['sid'],//"26OHqxA8obdsQpXs0Px0",
-				secret: flashVars['secret'],
-				owner_id: ownerID,
-				v: "5.62",
-				message: "test WallPost"
-			},
-				onSuccess, onError);	
+			VK.api("wall.post", { owner_id: /*"12703356"*/ownerID, message: "wallPosts text", attachments: "photo12703356_431371686"}, onSuccess, onError);
+			ready = false;
 		}
 		
-		public function SendMessage(userID:String, mess:String):void
+		public function SendRequest(userID:String):void
 		{
-			VK.api("messages.send", {
-				api_id: "5918660",
-				sid: "26OHqxA8obdsQpXs0Px0",
-				user_id: userID,
-				//access_token: flashVars['access_token'],
-				v: "5.62",
-				message: mess
-			},
-				onSuccess, onError);
-		}
-			
-		
-		public function SendRequest(userID:String, mess:String):void
-		{
-			VK.callMethod("showRequestBox", 82232368, mess, "myRequestKey", onSuccess, onRequestCancel, onError);
+			VK.api("apps.sendRequest", { user_id: /*"12703356"*/userID, message: "Apps invitation text", type: "invite", name: "qwerty", key: "_brainfucker"},	onSuccess, onError);
+			ready = false;
 		}
 		
-		private function onRequestCancel(data: Object):void
-		{
-			Facade.view.ToLog = "Request denied";
+		public function SendRequest2(userID:String):void{
+			VK.callMethod("showInviteBox");
 		}
 
 		private function onError(data: Object):void
 		{
 			Facade.view.ToLog = "error #" + data.error_code + ": " + data.error_msg;
+			ready = true;
 		}
 
 		private function onSuccess(data: Object):void
-		{
-			Facade.view.ToLog = "succes with " + data;
+		{			
+			Facade.view.ToLog = "created post_id#" + data.post_id;
+			ready = true;
 		}
 		
 		public function GetUsers():void
@@ -119,7 +98,7 @@ package controllerPac
 							myxml.items.user.id[it],
 							myxml.items.user.first_name[it],
 							myxml.items.user.last_name[it],
-							myxml.items.user.online[it],
+							true,
 							myxml.items.user.photo_50[it]
 						));
 					else
@@ -127,13 +106,13 @@ package controllerPac
 							myxml.items.user.id[it],
 							myxml.items.user.first_name[it],
 							myxml.items.user.last_name[it],
-							myxml.items.user.online[it],
+							false,
 							myxml.items.user.photo_50[it]
 						));
 					it++;
 				}
-				Facade.view.ToLog = onlineList.length + " друзей онлайн";
-				Facade.view.ToLog = offlineList.length + " друзей офлайн";
+//				Facade.view.ToLog = onlineList.length + " друзей онлайн";
+//				Facade.view.ToLog = offlineList.length + " друзей офлайн";
 				
 				Facade.view.getClip.addEventListener(Event.ENTER_FRAME, Facade.view.getClip.onEnterFrame);
 		}

@@ -19,7 +19,6 @@ package
 		
 		protected static function onMouseOver(event: MouseEvent): void {
 			event.target.nextFrame();
-			trace(event.target.name);
 		}
 		
 		protected static function onMouseOut(event: MouseEvent): void {

@@ -16,7 +16,8 @@ package modelPac
 		{
 			super();
 			stop();
-			Handlers.SetButton(sendButton, onSendButtonClick);
+			sendButton.visible = false;
+			//Handlers.SetButton(sendButton, onSendButtonClick);
 			
 			this.search.addEventListener(KeyboardEvent.KEY_UP, onSearchInput);
 			this.search.addEventListener(MouseEvent.CLICK, onSearchClick);
@@ -60,16 +61,24 @@ package modelPac
 		{
 			var fr:Friend;
 			var lnt:int = Facade.controller.selectedList.length;
-			trace("selectedList.length = " + Facade.controller.selectedList.length);
+			var nullCount:int = 0;
 			for (var i:int = 0; i < lnt; i++)
 			{
-				fr = Facade.controller.selectedList.shift();
-				fr.checkBox.gotoAndStop("disable");
-				fr.checkBox.mouseEnabled = false;
-				Handlers.UnSetButton(fr.checkBox, fr.onCheckBoxClick);
+				fr = Facade.controller.selectedList.shift();				
+				if (fr == null)
+					nullCount++;
+				else
+				{
+					fr.checkBox.gotoAndStop("disable");
+					fr.checkBox.mouseEnabled = false;
+					Handlers.UnSetButton(fr.checkBox, fr.onCheckBoxClick);
+//					fr.getOnline ? Facade.controller.WallPost(fr.getID) : Facade.controller.SendRequest(fr.getID);
+				}
 			}
+			lnt -= nullCount;
+			trace("selectedList.length = " + lnt);
 		}
-		
+	
 		public function onEnterFrame(event:Event):void
 		{
 			SetField(this.currentFrame, true);
